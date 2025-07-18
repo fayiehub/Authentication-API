@@ -11,7 +11,7 @@ This is an **Authentication API** built with Python/Flask and SQLite to support 
 - **Session Management** for authenticated users
 - **Welcome Message** in Swahili upon successful login
 - **SQLite Database** DB engine for local data storage with SQLAlchemy ORM layer
-- **Session Token Expiration** token set to expire after 1 hour
+- **Session Expiration** Flask session set to expire after 1 hour
 
 ## 🏗️ Project Structure
 

@@ -12,8 +12,8 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY', secrets.token_hex(32))
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///userinfo.db'
-# Configure session timeout from environment variable (default 1 hour)
-session_timeout = int(os.getenv('SESSION_TIMEOUT_MINUTES', 60))
+session_timeout = int(os.getenv('SESSION_TIMEOUT_MINUTES', 60)) # session timeout from .env (1 hour)
+
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=session_timeout)
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
