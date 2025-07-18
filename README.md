@@ -10,7 +10,7 @@ This is an **Authentication API** built with Python/Flask and SQLite to support 
 - **Password Validation** (8+ characters, uppercase, lowercase, numbers, special characters)
 - **Session Management** for authenticated users
 - **Welcome Message** in Swahili upon successful login
-- **SQLite Database** for local data storage
+- **SQLite Database** DB engine for local data storage with SQLAlchemy ORM layer on top of it
 
 ## 🏗️ Project Structure
 
