@@ -16,7 +16,8 @@ This is an **Authentication API** built with Python/Flask and SQLite to support 
 ## 🔨 Tools
 - **VS Code IDE**
 - **Postman**
-- **GitLab**
+- **GitLab** (original submission)
+- **GitHub** (personal repository)
 
 ## 🏗️ Project Structure
 
