@@ -1,4 +1,4 @@
-# Backend Hackathon Challenge 3: Authentication
+# Stanbic Backend Hackathon Challenge 3: Authentication
 P.S. This README file is edited and formatted with the help of GitHub Copilot 🙂
 
 This is an **Authentication API** built with Python/Flask and SQLite to support user registration and login with email and password.
@@ -13,7 +13,7 @@ This is an **Authentication API** built with Python/Flask and SQLite to support 
 - **SQLite Database** DB engine for local data storage with SQLAlchemy ORM layer
 - **Session Expiration** Flask session set to expire after 1 hour
 
-## 🏗️ Tools
+## 🔨 Tools
 - **VS Code IDE**
 - **Postman**
 - **GitLab**
