@@ -10,7 +10,8 @@ This is an **Authentication API** built with Python/Flask and SQLite to support 
 - **Password Validation** (8+ characters, uppercase, lowercase, numbers, special characters)
 - **Session Management** for authenticated users
 - **Welcome Message** in Swahili upon successful login
-- **SQLite Database** DB engine for local data storage with SQLAlchemy ORM layer on top of it
+- **SQLite Database** DB engine for local data storage with SQLAlchemy ORM layer
+- **Session Token Expiration** token set to expire after 1 hour
 
 ## 🏗️ Project Structure
 
@@ -31,7 +32,7 @@ MiniHackathon-project/
 - `GET /` - To test that API is running successfully
 - `POST /register` - For user registration
 - `POST /login` - For user login
-- `GET /home` - Protected route that is accessed after successful login
+- `GET /profile` - Protected route that is accessed after successful login
 
 ## 📋 Dependencies
 
@@ -47,6 +48,9 @@ MiniHackathon-project/
 ### Authentication & Security
 - **Flask-Bcrypt (1.0.1)** - Flask extension for bcrypt password hashing
 - **bcrypt (4.3.0)** - Password hashing library for secure authentication
+
+### Environment & Configuration
+- **python-dotenv (1.1.1)** - Load environment variables from .env files
 
 ### Utilities
 - **click (8.1.8)** - Command line interface creation toolkit
