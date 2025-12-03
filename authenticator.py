@@ -31,8 +31,20 @@ class User(db.Model):
 
     @staticmethod
     def validate_password(password):
+        
+        """
+        Validate password requirements:
+        - At least 8 characters
+        - At least one uppercase letter
+        - At least one lowercase letter  
+        - At least one number
+        - At least one special character
+        """
+
         if len(password) < 8:
             return False, "Password must be at least 8 characters long"
+
+            # Regex pattern for password validation
         pattern = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$'
         if not re.match(pattern, password):
             return False, "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character (@$!%*?&)"
@@ -40,6 +52,7 @@ class User(db.Model):
 
     @staticmethod
     def validate_email(email):
+        # Validate email format using regex
         pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
         if not re.match(pattern, email):
             return False, "Invalid email format"
@@ -68,16 +81,22 @@ def token_required(f):
         return f(current_user, *args, **kwargs)
     return decorated
 
+# this is the route that serves as the home page to show that the API is running
 @app.route('/')
 def index():
     return jsonify({'message': 'Authentication API is running...'})
 
+# this is the route that handles user registration
 @app.route('/register', methods=['POST'])
 def register():
     data = request.json
+
+    # Validate email format
     is_valid_email, email_message = User.validate_email(data['email'])
     if not is_valid_email:
         return jsonify({'message': email_message}), 400
+
+    # Validate password before proceeding
     is_valid, message = User.validate_password(data['password'])
     if not is_valid:
         return jsonify({'message': message}), 400
@@ -90,6 +109,7 @@ def register():
     db.session.commit()
     return jsonify({'message': 'Registration successful'})
 
+# this is the route that handles user login
 @app.route('/login', methods=['POST'])
 def login():
     data = request.json
@@ -108,11 +128,13 @@ def login():
         'token': token
     })
 
+# this is the route that leads to the main profile page after successful login
 @app.route('/profile', methods=['GET'])
 @token_required
 def profile(current_user):
     return jsonify({'message': f'Karibu sana, {current_user.username}!'})
 
+# Run the app
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
