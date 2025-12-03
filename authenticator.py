@@ -6,6 +6,8 @@ import re
 import os
 from dotenv import load_dotenv
 from datetime import timedelta
+from functools import wraps
+import jwt
 
 load_dotenv()
 
@@ -57,6 +59,35 @@ class User(db.Model):
             return False, "Invalid email format"
         return True, "Email is valid"
 
+def token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = None
+
+        # JWT is passed in the header
+        if 'Authorization' in request.headers:
+            auth_header = request.headers.get('Authorization')
+            if auth_header.startswith("Bearer "):
+                token = auth_header.split(" ")[1]
+
+        if not token:
+            return jsonify({'message': 'Token is missing!'}), 401
+
+        try:
+            data = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
+            current_user = User.query.filter_by(id=data['user_id']).first()
+
+        except jwt.ExpiredSignatureError:
+            return jsonify({'message': 'Token has expired'}), 401
+
+        except Exception:
+            return jsonify({'message': 'Token is invalid'}), 401
+
+        return f(current_user, *args, **kwargs)
+
+    return decorated
+
+
 # this is the route that serves as the home page to show that the API is running
 @app.route('/')
 def index():
@@ -98,15 +129,26 @@ def login():
         return jsonify({'message': 'Login successful'})
     return jsonify({'message': 'Invalid credentials'}), 401
 
+        # Generate JWT token
+    token = jwt.encode({
+        'user_id': user.id,
+        'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=1)
+    }, SECRET_KEY, algorithm="HS256")
+
+    return jsonify({
+        'message': 'Login successful',
+        'token': token
+    })
+
 # this is the route that leads to the main profile page after successful login
 @app.route('/profile', methods=['GET'])
-def profile():
+@token_required
+def profile(current_user):
     if 'email' not in session:
         return jsonify({'message': 'Please log in first'}), 401
 
     username = session['username']
-    return jsonify({'message': f'Karibu sana, {username}!'})
-    
+    return jsonify({'message': f'Karibu sana, {current_user.username}!'})  
 
     
 # Run the app
